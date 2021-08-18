@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+coverage = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+flake8 = "*"
+numpydoc = "*"
+bandit = "*"
+
+[packages]
+loguru = "*"
+gunicorn = "*"
+flask = "*"
+flask_restful = "*"
+flask_swagger = "*"
