@@ -15,10 +15,8 @@
     # Install ssh-agent if not already installed, it is required by Docker.
     # (change apt-get to yum if you use a CentOS-based image)
     - 'which ssh-agent || ( apk --update add openssh-client )'
-
     # Run ssh-agent (inside the build environment)
     - eval $(ssh-agent -s)
-
     # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
     - echo "$BOOT_GITLAB_SSH_KEY" |  tr -d ' ' | base64 -d | ssh-add -
     - mkdir -p ~/.ssh
@@ -38,9 +36,6 @@ stages:
   - document
   - build
   - deploy_dev
-
-variables:
-  the_proxy: "http://host.docker.internal:3128"
 
 lint:
   stage: lint
@@ -105,7 +100,6 @@ quality_check:
     - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$BOOT_SONAR_KEY -Dsonar.projectVersion=$APPLICATION_TAG_VERSION
   only:
    - master
-  allow_failure: true
 
 document:
   stage: document
