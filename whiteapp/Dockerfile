@@ -2,7 +2,7 @@
 FROM docker-remote.registry.saas.cagip.group.gca/library/python:3.8-slim
 
 # copy project
-COPY . ./whiteapp
+COPY . whiteapp/
 
 EXPOSE 8000
 
