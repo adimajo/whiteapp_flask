@@ -6,7 +6,12 @@ from flask.json import jsonify
 from flask_restful import Resource
 from loguru import logger
 
-from whiteapp import __version__
+try:
+    from whiteapp import __version__
+except ImportError:
+    import sys
+    sys.path.append("..")
+    from whiteapp import __version__
 
 
 class Version(Resource):
