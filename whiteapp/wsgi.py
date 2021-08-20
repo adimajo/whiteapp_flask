@@ -1,14 +1,10 @@
-from flask import Flask, jsonify
 import flask_restful as restful
+from flask import Flask, jsonify
 from flask_swagger import swagger
 from flask_wtf.csrf import CSRFProtect
 
-try:
-    from whiteapp.WhiteApp import Version
-    from whiteapp import __version__
-except ImportError:
-    from WhiteApp import Version
-    from . import __version__
+from whiteapp import __version__
+from whiteapp.WhiteApp import Version
 
 
 def create_app():
@@ -25,7 +21,7 @@ def create_app():
     def spec():
         swag = swagger(app)
         swag['info']['version'] = __version__
-        swag['info']['title'] = "Data Harvesting"
+        swag['info']['title'] = "Whiteapp Python Django by GRO"
         return jsonify(swag)
 
     csrf = CSRFProtect()
