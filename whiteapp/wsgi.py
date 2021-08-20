@@ -1,8 +1,12 @@
 from flask import Flask, jsonify
 import flask_restful as restful
 from flask_swagger import swagger
-from whiteapp.WhiteApp import Version
-from whiteapp import __version__
+try:
+    from whiteapp.WhiteApp import Version
+    from whiteapp import __version__
+except ImportError:
+    from WhiteApp import Version
+    from . import __version__
 
 
 def create_app():
