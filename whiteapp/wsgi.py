@@ -1,6 +1,8 @@
 from flask import Flask, jsonify
 import flask_restful as restful
 from flask_swagger import swagger
+from flask_wtf.csrf import CSRFProtect
+
 try:
     from whiteapp.WhiteApp import Version
     from whiteapp import __version__
@@ -25,6 +27,9 @@ def create_app():
         swag['info']['version'] = __version__
         swag['info']['title'] = "Data Harvesting"
         return jsonify(swag)
+
+    csrf = CSRFProtect()
+    csrf.init_app(app)
 
     return app
 
