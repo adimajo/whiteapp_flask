@@ -110,7 +110,7 @@ generate_tag:
 quality_check:
   stage: sonar_check
   image:
-    name: docker-remote.registry.saas.cagip.group.gca/sonarsource/sonar-scanner-cli:4.2
+    name: docker-remote.registry.saas.cagip.group.gca/sonarsource/sonar-scanner-cli:4.6
   <<: *common_tag
   variables:
     SONAR_TOKEN: "${BOOT_SONAR_TOKEN}"
