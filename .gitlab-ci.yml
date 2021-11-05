@@ -135,10 +135,10 @@ document:
   script:
     - pip install pipenv
     - apt update
-    - apt install -y make libpq-dev gcc sphinx-doc sphinx-common
+    - apt install -y make libpq-dev gcc
     - cd docs
     - export PIPENV_PIPFILE=../whiteapp/Pipfile
-    - pipenv install -d
+    - pipenv install -d --skip-lock
     - pipenv run make clean
     - pipenv run make html
     - git config --global http.sslverify false
