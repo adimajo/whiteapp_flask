@@ -139,6 +139,8 @@ document:
     - cd docs
     - export PIPENV_PIPFILE=../whiteapp/Pipfile
     - pipenv install -d --skip-lock
+    - pipenv run pip list
+    - pipenv run which sphinx-build
     - pipenv run make clean
     - pipenv run make html
     - git config --global http.sslverify false
