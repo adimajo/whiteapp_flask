@@ -135,7 +135,7 @@ document:
   script:
     - pip install pipenv
     - apt update
-    - apt install -y make libpq-dev gcc python3-sphinx
+    - apt install -y make libpq-dev gcc python-sphinx
     - cd docs
     - export PIPENV_PIPFILE=../whiteapp/Pipfile
     - pipenv install -d
