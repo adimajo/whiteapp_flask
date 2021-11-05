@@ -48,8 +48,17 @@ lint:
     - flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     - flake8 --ignore=W504 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+  only:
+    refs:
+      - branches
+    changes:
+      - .gitlab-ci.yml
+      - whiteapp/*
 
 test:
+  artifacts:
+    paths:
+      - coverage.xml
   stage: test
   <<: *common_python
   <<: *common_tag
@@ -57,9 +66,18 @@ test:
     - pip install pipenv
     - apt update
     - apt -y install libpq-dev gcc
-    - PIPENV_PIPFILE=whiteapp/Pipfile pipenv install -d
-    - PIPENV_PIPFILE=whiteapp/Pipfile pipenv run coverage run --source whiteapp/ -m pytest
-    - PIPENV_PIPFILE=whiteapp/Pipfile pipenv run coverage report
+    - export PIPENV_PIPFILE=whiteapp/Pipfile
+    - pipenv install -d
+    - pipenv run coverage run --source whiteapp/ -m pytest
+    - pipenv run coverage report
+    - pipenv run coverage xml
+  only:
+    refs:
+      - branches
+    changes:
+      - .gitlab-ci.yml
+      - whiteapp/*
+      - tests/*
 
 security:
   stage: security
@@ -68,6 +86,12 @@ security:
   script:
   - pip install bandit
   - bandit -r whiteapp
+  only:
+    refs:
+      - branches
+    changes:
+      - .gitlab-ci.yml
+      - whiteapp/*
 
 generate_tag:
   artifacts:
@@ -93,11 +117,14 @@ quality_check:
     SONAR_HOST_URL: "${BOOT_SONAR_INSTANCE}"
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar" # Defines the location of the analysis task cache
     GIT_DEPTH: 0 # Tells git to fetch all the branches of the project, required by the analysis task
-    SONAR_SCANNER_OPTS: "-Djavax.net.ssl.trustStore=certificates/cacerts"
+    SONAR_SCANNER_OPTS: "-Djavax.net.ssl.trustStore=cacerts"
   script:
     - . ./build.env
     - 'echo GENERATED TAG : $APPLICATION_TAG_VERSION'
-    - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$BOOT_SONAR_KEY -Dsonar.projectVersion=$APPLICATION_TAG_VERSION
+    - wget -qO - http://crl-priv-pki.credit-agricole.fr/ca/cacreditagricoleserver.crt >> cacreditagricoleserver.crt
+    - apk --update add java-common
+    - keytool -import -alias mycert -file cacreditagricoleserver.crt -storetype jks -trustcacerts -noprompt -keypass keypass -keystore cacerts -storepass test@123
+    - sonar-scanner -Dsonar.exclusions=tests/**,docs/**,coverage.xml,setup.py -Dsonar.python.coverage.reportPaths=coverage.xml -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$BOOT_SONAR_KEY -Dsonar.projectVersion=$APPLICATION_TAG_VERSION
   only:
    - master
 
@@ -110,13 +137,37 @@ document:
     - apt update
     - apt install -y make libpq-dev gcc
     - cd docs
-    - PIPENV_PIPFILE=../whiteapp/Pipfile pipenv install -d
-    - PIPENV_PIPFILE=../whiteapp/Pipfile pipenv run make clean
-    - PIPENV_PIPFILE=../whiteapp/Pipfile pipenv run make html
+    - export PIPENV_PIPFILE=../whiteapp/Pipfile
+    - pipenv install -d
+    - pipenv run make clean
+    - pipenv run make html
+    - git config --global http.sslverify false
+    - git config --global user.name "$GITLAB_USER_NAME"
+    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - git clone https://$BOOT_GITLAB_SRV_ACCOUNT:$BOOT_GITLAB_CAGIP_TOKEN@$BOOT_GITLAB_DOCS_REPO docs_to_publish
+    - rm -rf docs_to_publish/public
+    - mkdir docs_to_publish/public
+    - cp -r build/html/* docs_to_publish/public/
+    - cd docs_to_publish
+    - git add -A
+    - |-
+        if ! git diff-index --quiet HEAD --; then
+            git commit -am "Rollout version $APPLICATION_TAG_VERSION"
+            git push
+        else
+            echo "Nothing to push"
+        fi
   artifacts:
     paths:
       - docs/build/html
     expire_in: 1 week
+  only:
+    refs:
+      - branches
+    changes:
+      - .gitlab-ci.yml
+      - whiteapp/*
+      - docs/*
 
 build whiteapp:
   stage: build
@@ -143,7 +194,11 @@ build whiteapp:
     - wget -qO - http://crl-priv-pki.credit-agricole.fr/ca/cacreditagricoleserver.crt >> /kaniko/ssl/certs/additional-ca-cert-bundle.crt
     - /kaniko/executor --context . --dockerfile Dockerfile $KANIKOPROXYBUILDARGS --destination $BOOT_ARTI_SCRATCH_REGISTRY.$BOOT_ARTI_REGISTRY/$BOOT_ARTI_REPO:$APPLICATION_TAG_VERSION
   only:
-   - master
+    refs:
+      - master
+    changes:
+      - .gitlab-ci.yml
+      - whiteapp/*
 
 deploy_dev:
   stage: deploy_dev
