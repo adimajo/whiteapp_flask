@@ -133,7 +133,7 @@ document:
   <<: *common_python
   <<: *common_tag
   script:
-#     - pip install pipenv
+    - . ./build.env
     - pip install pipenv==2021.5.29
     - apt update
     - apt install -y make libpq-dev gcc git
