@@ -134,7 +134,7 @@ document:
   <<: *common_tag
   script:
 #     - pip install pipenv
-    - pip install pipenv '==2021.5.29'
+    - pip install pipenv==2021.5.29
     - apt update
     - apt install -y make libpq-dev gcc
     - cd docs
