@@ -142,7 +142,7 @@ document:
     - pipenv run pip list
     - which python
     - pipenv run which python
-    - cd /root/.local/share/virtualenvs/whiteapp-oxTR5c2-/Scripts
+    - cd /root/.local/share/virtualenvs/whiteapp-oxTR5c2-/
     - ls -al
     - pipenv run which sphinx-build
     - pipenv run make clean
