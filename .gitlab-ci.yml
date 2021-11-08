@@ -134,6 +134,7 @@ document:
   <<: *common_tag
   script:
     - pip install pipenv
+#     - pip install pipenv '==2021.5.29'
     - apt update
     - apt install -y make libpq-dev gcc
     - cd docs
@@ -145,7 +146,7 @@ document:
     - ls -al /root/.local/share/virtualenvs/whiteapp-oxTR5c2-/bin
     - pipenv run echo $PATH
     - pipenv run /root/.local/share/virtualenvs/whiteapp-oxTR5c2-/bin/sphinx-build --version
-    - pipenv run sphinx-build
+    - pipenv run sphinx-build --version
     - pipenv run make clean
     - pipenv run make html
     - git config --global http.sslverify false
