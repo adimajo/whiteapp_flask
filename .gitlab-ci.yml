@@ -140,6 +140,8 @@ document:
     - export PIPENV_PIPFILE=../whiteapp/Pipfile
     - pipenv install -d --skip-lock
     - pipenv run pip list
+    - which python
+    - pipenv run which python
     - pipenv run which sphinx-build
     - pipenv run make clean
     - pipenv run make html
