@@ -143,7 +143,9 @@ document:
     - which python
     - pipenv run which python
     - ls -al /root/.local/share/virtualenvs/whiteapp-oxTR5c2-/bin
-    - pipenv run which sphinx-build
+    - pipenv run echo $PATH
+    - pipenv run /root/.local/share/virtualenvs/whiteapp-oxTR5c2-/bin/sphinx-build --version
+    - pipenv run sphinx-build
     - pipenv run make clean
     - pipenv run make html
     - git config --global http.sslverify false
