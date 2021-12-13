@@ -53,7 +53,7 @@ lint:
       - branches
     changes:
       - .gitlab-ci.yml
-      - whiteapp/*
+      - whiteapp/**/*
 
 test:
   artifacts:
@@ -67,7 +67,7 @@ test:
     - apt update
     - apt -y install libpq-dev gcc
     - export PIPENV_PIPFILE=whiteapp/Pipfile
-    - pipenv install -d
+    - pipenv install -d --skip-lock
     - pipenv run coverage run --source whiteapp/ -m pytest
     - pipenv run coverage report
     - pipenv run coverage xml
@@ -76,8 +76,8 @@ test:
       - branches
     changes:
       - .gitlab-ci.yml
-      - whiteapp/*
-      - tests/*
+      - whiteapp/**/*
+      - tests/**/*
 
 security:
   stage: security
@@ -91,12 +91,13 @@ security:
       - branches
     changes:
       - .gitlab-ci.yml
-      - whiteapp/*
+      - whiteapp/**/*
 
 generate_tag:
   artifacts:
     paths:
       - build.env
+      - whiteapp/Pipfile.lock
   stage: versionning
   <<: *common_python
   <<: *common_tag
@@ -104,7 +105,7 @@ generate_tag:
    - master
   script:
     - pip install pipenv
-    - PIPENV_PIPFILE=whiteapp/Pipfile pipenv install --skip-lock
+    - PIPENV_PIPFILE=whiteapp/Pipfile pipenv install
     - echo export APPLICATION_TAG_VERSION=`python -c 'import whiteapp; print(whiteapp.__version__)'` >> build.env
 
 quality_check:
@@ -222,22 +223,22 @@ deploy_dev:
   only:
    - master
 
-#promote_staging:
-#  stage: promote_staging
-#  when: manual
-#  <<: *ci_tools
-#  <<: *common_tag
-#  variables:
-#    CREDS: "${BOOT_ARTI_USER}:${BOOT_ARTI_PASSWORD}"
-#    SOURCE_REPO: "${BOOT_ARTI_SCRATCH_REGISTRY}"
-#    TARGET_REPO: "${BOOT_ARTI_STAGING_REGISTRY}"
-#  script:
-#    - APPLICATION_TAG_VERSION=`cat $VERSION_FILE`
-#    - 'echo GENERATED TAG : $APPLICATION_TAG_VERSION'
-#    - 'curl -S -k -u ${CREDS} -XPOST https://$BOOT_ARTI_REGISTRY/api/docker/$SOURCE_REPO/v2/promote -H "Content-Type: application/json" -d"{\"targetRepo\":\"${TARGET_REPO}\",\"dockerRepository\":\"${BOOT_ARTI_REPO}\",\"tag\":\"${APPLICATION_TAG_VERSION}\",\"copy\":true}"'
-#  only:
-#   - master
-#
+promote_staging:
+  stage: promote_staging
+  when: manual
+  <<: *ci_tools
+  <<: *common_tag
+  variables:
+    CREDS: "${BOOT_ARTI_USER}:${BOOT_ARTI_PASSWORD}"
+    SOURCE_REPO: "${BOOT_ARTI_SCRATCH_REGISTRY}"
+    TARGET_REPO: "${BOOT_ARTI_STAGING_REGISTRY}"
+  script:
+    - APPLICATION_TAG_VERSION=`cat $VERSION_FILE`
+    - 'echo GENERATED TAG : $APPLICATION_TAG_VERSION'
+    - 'curl -S -k -u ${CREDS} -XPOST https://$BOOT_ARTI_REGISTRY/api/docker/$SOURCE_REPO/v2/promote -H "Content-Type: application/json" -d"{\"targetRepo\":\"${TARGET_REPO}\",\"dockerRepository\":\"${BOOT_ARTI_REPO}\",\"tag\":\"${APPLICATION_TAG_VERSION}\",\"copy\":true}"'
+  only:
+   - master
+
 #deploy_int:
 #  stage: deploy_int
 #  when: manual
@@ -282,22 +283,22 @@ deploy_dev:
 #  only:
 #   - master
 #
-#promote_stable:
-#  stage: promote_stable
-#  when: manual
-#  <<: *ci_tools
-#  <<: *common_tag
-#  variables:
-#    SOURCE_REPO: "${BOOT_ARTI_STAGING_REGISTRY}"
-#    TARGET_REPO: "${BOOT_ARTI_STABLE_REGISTRY}"
-#    IMAGE: "${BOOT_ARTI_REPO}"
-#  script:
-#    - APPLICATION_TAG_VERSION=`cat $VERSION_FILE`
-#    - 'echo GENERATED TAG : $APPLICATION_TAG_VERSION'
-#    - docker-promote --tag=$APPLICATION_TAG_VERSION
-#  only:
-#   - master
-#
+promote_stable:
+  stage: promote_stable
+  when: manual
+  <<: *ci_tools
+  <<: *common_tag
+  variables:
+    SOURCE_REPO: "${BOOT_ARTI_STAGING_REGISTRY}"
+    TARGET_REPO: "${BOOT_ARTI_STABLE_REGISTRY}"
+    IMAGE: "${BOOT_ARTI_REPO}"
+  script:
+    - APPLICATION_TAG_VERSION=`cat $VERSION_FILE`
+    - 'echo GENERATED TAG : $APPLICATION_TAG_VERSION'
+    - docker-promote --tag=$APPLICATION_TAG_VERSION
+  only:
+   - master
+
 #deploy_preprod:
 #  stage: deploy_pprd
 #  when: manual
