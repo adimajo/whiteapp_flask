@@ -1,7 +1,20 @@
-import sys
-sys.path.append("whiteapp")
+import json
+
+import pytest
+
+from whiteapp.wsgi import app
+from whiteapp import __version__
 
 
-def test_whiteapp():
-    from whiteapp import __version__
-    from whiteapp.wsgi import app
+@pytest.fixture
+def client():
+    app.config['TESTING'] = True
+
+    with app.test_client() as client:
+        yield client
+
+
+def test_version(client, caplog):
+    response = client.get('/version')
+    assert json.loads(response.data.decode("utf-8"))["version"] == __version__
+    assert "Successful GET" in caplog.records[-1].message

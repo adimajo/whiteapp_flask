@@ -59,6 +59,8 @@ autodoc_default_options = {
 
 autosummary_generate = True
 
+autosummary_imported_members = True
+
 napoleon_numpy_docstring = False
 
 napoleaon_use_rtype = False
