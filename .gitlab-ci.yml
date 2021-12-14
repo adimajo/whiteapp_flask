@@ -168,8 +168,8 @@ document:
       - branches
     changes:
       - .gitlab-ci.yml
-      - whiteapp/*
-      - docs/*
+      - whiteapp/**/*
+      - docs/**/*
 
 build whiteapp:
   stage: build
@@ -200,7 +200,7 @@ build whiteapp:
       - master
     changes:
       - .gitlab-ci.yml
-      - whiteapp/*
+      - whiteapp/**/*
 
 deploy_dev:
   stage: deploy_dev

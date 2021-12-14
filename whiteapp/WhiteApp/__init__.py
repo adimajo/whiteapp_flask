@@ -2,37 +2,22 @@
 WhiteApp application
 """
 
-from flask.json import jsonify
-from flask_restx import Resource
+from flask_restx import Resource, Namespace, fields
 from loguru import logger
 
 from whiteapp import __version__
 
+api = Namespace('')
 
+my_output = api.model("output", {'version': fields.String})
+
+
+@api.route('/version')
 class Version(Resource):
     """
     Flask resource to spit current version
     """
+    @api.marshal_with(my_output)
     def get(self):
-        """
-        get method for Version resource: outputs the current version of the whiteapp.
-        ---
-        responses:
-            200:
-                description: version of the whiteapp
-            400:
-                description: successfully POSTed but failed to JSONify API version
-            500:
-                description: all other server errors
-        """
-        logger.info("Successful GET")
-
-        try:
-            response = jsonify({"version": __version__})
-            response.status_code = 200
-        except:
-            response = jsonify("API failed")
-            response.status_code = 400
-        logger.info("Successfully JSONified result")
-
-        return response
+        logger.debug("Successful GET")
+        return {"version": __version__}
