@@ -36,6 +36,8 @@ stages:
   - document
   - build
   - deploy_dev
+  - promote_staging
+  - promote_stable
 
 lint:
   stage: lint
