@@ -1,6 +1,6 @@
 .common_python: &common_python
   image:
-    name: docker-remote.registry.saas.cagip.group.gca/library/python:3.8-slim
+    name: ${DOCKER_REGISTRY}python:3.8-slim
 
 .ci_tools: &ci_tools
   image:
@@ -179,9 +179,6 @@ build whiteapp:
   image:
     name: docker-remote.registry.saas.cagip.group.gca/kaniko-project/executor:debug-v1.0.0
     entrypoint: [""]
-  variables:
-    TEST_STATIC: 0
-    TEST_DB: 1
   script:
     - . ./build.env
     - cd whiteapp
@@ -196,7 +193,7 @@ build whiteapp:
        KANIKOCFG="${KANIKOCFG} }"
        echo "${KANIKOCFG}" >> /kaniko/.docker/config.json
     - wget -qO - http://crl-priv-pki.credit-agricole.fr/ca/cacreditagricoleserver.crt >> /kaniko/ssl/certs/additional-ca-cert-bundle.crt
-    - /kaniko/executor --context . --dockerfile Dockerfile $KANIKOPROXYBUILDARGS --destination $BOOT_ARTI_SCRATCH_REGISTRY.$BOOT_ARTI_REGISTRY/$BOOT_ARTI_REPO:$APPLICATION_TAG_VERSION
+    - /kaniko/executor --context . --dockerfile Dockerfile $KANIKOPROXYBUILDARGS --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --destination $BOOT_ARTI_SCRATCH_REGISTRY.$BOOT_ARTI_REGISTRY/$BOOT_ARTI_REPO:$APPLICATION_TAG_VERSION
   only:
     refs:
       - master
@@ -235,7 +232,7 @@ promote_staging:
     SOURCE_REPO: "${BOOT_ARTI_SCRATCH_REGISTRY}"
     TARGET_REPO: "${BOOT_ARTI_STAGING_REGISTRY}"
   script:
-    - APPLICATION_TAG_VERSION=`cat $VERSION_FILE`
+    - . ./build.env
     - 'echo GENERATED TAG : $APPLICATION_TAG_VERSION'
     - 'curl -S -k -u ${CREDS} -XPOST https://$BOOT_ARTI_REGISTRY/api/docker/$SOURCE_REPO/v2/promote -H "Content-Type: application/json" -d"{\"targetRepo\":\"${TARGET_REPO}\",\"dockerRepository\":\"${BOOT_ARTI_REPO}\",\"tag\":\"${APPLICATION_TAG_VERSION}\",\"copy\":true}"'
   only:
@@ -295,7 +292,7 @@ promote_stable:
     TARGET_REPO: "${BOOT_ARTI_STABLE_REGISTRY}"
     IMAGE: "${BOOT_ARTI_REPO}"
   script:
-    - APPLICATION_TAG_VERSION=`cat $VERSION_FILE`
+    - . ./build.env
     - 'echo GENERATED TAG : $APPLICATION_TAG_VERSION'
     - docker-promote --tag=$APPLICATION_TAG_VERSION
   only:
