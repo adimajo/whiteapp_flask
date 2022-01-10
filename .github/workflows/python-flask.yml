@@ -60,8 +60,11 @@ jobs:
           git commit -am "Rollout version ${{ env.APPLICATION_TAG_VERSION }}"
           git checkout pages
           rm -rf docs
-          mkdir docs
+          mkdir docs_temp
           git checkout master -- docs README.md
+          cp -rf docs/build/html/* docs_temp/
+          rm -rf docs
+          mv docs_temp docs
           git add docs
           if ! git diff-index --quiet HEAD -- ; then git commit -am "Rollout version ${{ env.APPLICATION_TAG_VERSION }}" && git push origin pages; else echo "Nothing to push"; fi
           git checkout master
