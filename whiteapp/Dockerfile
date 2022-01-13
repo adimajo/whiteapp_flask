@@ -3,8 +3,6 @@ ARG PYPI_REMOTE
 
 FROM ${DOCKER_REGISTRY}python:3.8-slim
 
-ENV PYPI_REMOTE $PYPI_REMOTE
-
 # copy project
 COPY . whiteapp/
 
