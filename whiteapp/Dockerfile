@@ -12,7 +12,7 @@ EXPOSE 8000
 
 # install dependencies
 RUN pip install --upgrade pip && pip install pipenv
-RUN PIPENV_PIPFILE=whiteapp/Pipfile pipenv install --system --deploy
+RUN PYPI_REMOTE=https://registry.saas.cagip.group.gca/api/pypi/pypi-remote/simple PIPENV_PIPFILE=whiteapp/Pipfile pipenv install --system --deploy
 RUN chown nobody:nogroup /whiteapp
 
 USER nobody
