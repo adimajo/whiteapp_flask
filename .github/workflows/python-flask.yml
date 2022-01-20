@@ -34,6 +34,7 @@ jobs:
           export PIPENV_PIPFILE=whiteapp/Pipfile
           echo "PIPENV_PIPFILE=$PIPENV_PIPFILE" >> $GITHUB_ENV
           pipenv install
+          sed -i 's/${PYPI_REMOTE}/'${PYPI_REMOTE}'/g' whiteapp/Pipfile.lock
           pipenv install --dev --skip-lock
           export APPLICATION_TAG_VERSION=`python -c 'import whiteapp; print(whiteapp.__version__)'`
           echo "APPLICATION_TAG_VERSION=$APPLICATION_TAG_VERSION" >> $GITHUB_ENV

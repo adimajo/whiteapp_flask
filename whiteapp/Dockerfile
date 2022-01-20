@@ -1,9 +1,7 @@
 ARG DOCKER_REGISTRY
-ARG PYPI_REMOTE
 
 FROM ${DOCKER_REGISTRY}python:3.8-slim
 
-ENV PYPI_REMOTE https://registry.saas.cagip.group.gca/api/pypi/pypi-remote/simple
 ENV PIPENV_PIPFILE whiteapp/Pipfile
 
 # copy project
