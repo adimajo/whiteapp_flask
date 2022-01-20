@@ -1,6 +1,6 @@
 [[source]]
 name = "artifactory_mirror"
-url = "${PYPI_REMOTE}"
+url = ${PYPI_REMOTE}
 verify_ssl = false
 
 [dev-packages]
