@@ -3,7 +3,8 @@ ARG PYPI_REMOTE
 
 FROM ${DOCKER_REGISTRY}python:3.8-slim
 
-ENV PYPI_REMOTE "${PYPI_REMOTE}"
+ENV PYPI_REMOTE ${PYPI_REMOTE}
+ENV PIPENV_PIPFILE whiteapp/Pipfile
 
 # copy project
 COPY . whiteapp/
@@ -12,8 +13,7 @@ EXPOSE 8000
 
 # install dependencies
 RUN pip install --upgrade pip && pip install pipenv
-RUN bash -c 'echo $PYPI_REMOTE'
-RUN PYPI_REMOTE="${PYPI_REMOTE}" PIPENV_PIPFILE=whiteapp/Pipfile pipenv install --system --deploy
+RUN pipenv install --system --deploy
 RUN chown nobody:nogroup /whiteapp
 
 USER nobody
