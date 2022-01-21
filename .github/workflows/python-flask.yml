@@ -31,11 +31,11 @@ jobs:
           pip install pipenv
           export PYPI_REMOTE=https://pypi.org/simple
           echo "PYPI_REMOTE=$PYPI_REMOTE" >> $GITHUB_ENV
+          sed -i 's|${PYPI_REMOTE}|'$PYPI_REMOTE'|g' whiteapp/Pipfile
           export PIPENV_PIPFILE=whiteapp/Pipfile
           echo "PIPENV_PIPFILE=$PIPENV_PIPFILE" >> $GITHUB_ENV
           pipenv install
           pipenv install --dev --skip-lock
-          sed -i 's|${PYPI_REMOTE}|'$PYPI_REMOTE'|g' whiteapp/Pipfile.lock
           export APPLICATION_TAG_VERSION=`python -c 'import whiteapp; print(whiteapp.__version__)'`
           echo "APPLICATION_TAG_VERSION=$APPLICATION_TAG_VERSION" >> $GITHUB_ENV
       - name: Lint with flake8
@@ -78,9 +78,9 @@ jobs:
       - name: Archive Pipfile.lock
         uses: actions/upload-artifact@v2
         with:
-          name: Pipfile.lock
           path: |
             whiteapp/Pipfile.lock
+            whiteapp/Pipfile
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
