@@ -38,12 +38,6 @@ jobs:
           sed -i 's|${PYPI_REMOTE}|'$PYPI_REMOTE'|g' whiteapp/Pipfile.lock
           export APPLICATION_TAG_VERSION=`python -c 'import whiteapp; print(whiteapp.__version__)'`
           echo "APPLICATION_TAG_VERSION=$APPLICATION_TAG_VERSION" >> $GITHUB_ENV
-      - name: Archive Pipfile.lock
-        uses: actions/upload-artifact@v2
-        with:
-          name: Pipfile.lock
-          path: |
-            whiteapp/Pipfile.lock
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
@@ -81,6 +75,12 @@ jobs:
           git add docs
           if ! git diff-index --quiet HEAD -- ; then git commit -am "Rollout version ${{ env.APPLICATION_TAG_VERSION }}" && git push origin pages --force; else echo "Nothing to push"; fi
           git checkout master
+      - name: Archive Pipfile.lock
+        uses: actions/upload-artifact@v2
+        with:
+          name: Pipfile.lock
+          path: |
+            whiteapp/Pipfile.lock
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
