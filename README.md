@@ -10,19 +10,18 @@ and a Travis pipeline (for elegant display of code coverage).
 
 ## Using the Github Actions pipeline
 
+Nothing to do!
+
 ## Using the Gitlab CI pipeline
+
+To make use of Sonar's open source facilities,
+set the following environment variables in Gitlab's UI under Settings > CI/CD.
 
 ### Variables
 
-BOOT_GITLAB_DOCS_REPO
+`BOOT_SONAR_TOKEN`
 
-BOOT_GITLAB_SRV_ACCOUNT
-
-BOOT_GITLAB_CAGIP_TOKEN
-
-BOOT_SONAR_TOKEN
-
-BOOT_SONAR_INSTANCE
+You can obtain this token by logging in to [sonarcloud.io](https://sonarcloud.io/) and generating a key.
 
 ## Using the Travis pipeline
 
