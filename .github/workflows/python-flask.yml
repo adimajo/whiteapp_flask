@@ -38,6 +38,12 @@ jobs:
           sed -i 's|${PYPI_REMOTE}|'$PYPI_REMOTE'|g' whiteapp/Pipfile.lock
           export APPLICATION_TAG_VERSION=`python -c 'import whiteapp; print(whiteapp.__version__)'`
           echo "APPLICATION_TAG_VERSION=$APPLICATION_TAG_VERSION" >> $GITHUB_ENV
+      - name: Archive Pipfile.lock
+        uses: actions/upload-artifact@v2
+        with:
+          name: Pipfile.lock
+          path: |
+            whiteapp/Pipfile.lock
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
@@ -51,7 +57,7 @@ jobs:
           pipenv run coverage xml
       - name: Test security
         run: |
-          pipenv run bandit -r glmtree
+          pipenv run bandit -r whiteapp
       - name: Build documentation
         run: |
           cd docs
