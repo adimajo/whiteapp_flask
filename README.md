@@ -19,9 +19,13 @@ set the following environment variables in Gitlab's UI under Settings > CI/CD.
 
 ### Variables
 
-`BOOT_SONAR_TOKEN`
+`CURRENT_TAG`: the tag of an available public Gitlab runner, e.g. `docker`
 
-You can obtain this token by logging in to [sonarcloud.io](https://sonarcloud.io/) and generating a key.
+`PYPI_REMOTE`: the URL to your favorite PyPi remote, e.g. `https://pypi.org/simple`
+
+`BOOT_SONAR_INSTANCE`: `https://sonarcloud.io/`
+
+`BOOT_SONAR_TOKEN`: you can obtain this token by logging in to [sonarcloud.io](https://sonarcloud.io/) and generating a key.
 
 ## Using the Travis pipeline
 
