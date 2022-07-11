@@ -12,16 +12,20 @@ The template ships with a Gitlab CI pipeline (which lints the code, documents it
 a Github Actions pipeline (which lints, documents and upload the documentation as github page, checks the package, computes tests and coverage, builds a docker container and uploads it to Github),
 and a Travis pipeline (for elegant display of code coverage). 
 
+## Sonarcloud
+
+If you want to leverage the static code analysis (and nice display!) provided by Sonarcloud, link your Github account
+to Sonarcloud at [sonarcloud.io](https://sonarcloud.io/).
+
 ## Using the Github Actions pipeline
 
-Nothing to do!
+Nothing to do! If you import your project in Sonarcloud, it will automatically trigger its analysis at each push
+(see "SonarCloud Automatic Analysis" under Administration > Analysis Method).
 
 ## Using the Gitlab CI pipeline
 
-To make use of Sonar's open source facilities,
-set the following environment variables in Gitlab's UI under Settings > CI/CD.
-
-### Variables
+Set the following environment variables in Gitlab's UI under Settings > CI/CD. These are not hardcoded into the pipeline
+since I use the same pipeline at Crédit Agricole S.A. with our own instances of Gitlab, Gitlab runners, Sonar, etc.
 
 `CURRENT_TAG`: the tag of an available public Gitlab runner, e.g. `docker`
 
@@ -42,12 +46,16 @@ and sends it to [app.codecov.io](https://app.codecov.io) to display it nicely on
 
 ### Python Environnement
 
-This project uses **python 3.8** in a Docker container.
+This project is tested againt **python 3.8 and 3.9**. It ultimately build a Docker container.
 
 This project uses **pipenv** as a dependency manager, [see here](https://moodle.insa-rouen.fr/pluginfile.php/75430/mod_resource/content/4/Python-PipPyenv.pdf).
 
 All dependencies are listed in `Pipfile`.
-They can be installed with `pipenv install [-d]`.
+They can be installed with `pipenv install [-d] [--skip-lock]`.
 
 To download these dependencies to install them on an offline computer,
 use  `pipenv lock -r > requirements.txt` and `pip download -d TARGET_FOLDER -r requirements.txt`.
+
+## Disclaimer
+
+Supported by Groupe Crédit Agricole; analyses and opinions of the author(s) expressed in this work are their own.
