@@ -35,11 +35,11 @@ since I use the same pipeline at Crédit Agricole S.A. with our own instances of
 
 `BOOT_SONAR_TOKEN`: you can obtain this token by logging in to [sonarcloud.io](https://sonarcloud.io/) and generating a key.
 
-`CI_REGISTRY`: the Docker registry on which to upload the image
+`CI_REGISTRY`: the Docker registry on which to upload the image, e.g. index.docker.io or registry.gitlab.com
 
-`CI_REGISTRY_USER`: your Dockerhub username
+`CI_REGISTRY_USER`: your registry username, e.g. Gitlab or Dockerhub username
 
-`CI_REGISTRY_PASSWORD`: your Dockerhub password (or access token)
+`CI_REGISTRY_PASSWORD`: your registry password (or access token), e.g. Gitlab or Dockerhub username
 
 ## Using the Travis pipeline
 
