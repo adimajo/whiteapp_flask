@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>whiteapp.WhiteApp &mdash; WhiteApp Flask 1.0.0 documentation</title>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -72,14 +73,10 @@
            <div itemprop="articleBody">
              
   <section id="module-whiteapp.WhiteApp">
-<span id="whiteapp-whiteapp"></span><h1>whiteapp.WhiteApp<a class="headerlink" href="#module-whiteapp.WhiteApp" title="Permalink to this headline"></a></h1>
+<span id="whiteapp-whiteapp"></span><h1>whiteapp.WhiteApp<a class="headerlink" href="#module-whiteapp.WhiteApp" title="Permalink to this heading"></a></h1>
 <p>WhiteApp application</p>
 <p class="rubric">Classes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Namespace</span></code>(name[, description, path, ...])</p></td>
 <td><p>Group resources together.</p></td>
@@ -95,10 +92,10 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="whiteapp.WhiteApp.Version">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whiteapp.WhiteApp.</span></span><span class="sig-name descname"><span class="pre">Version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whiteapp/WhiteApp.html#Version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whiteapp.WhiteApp.Version" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restx.resource.Resource</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></p>
 <p>Flask resource to spit current version</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>provide_automatic_options</strong></dt><dd></dd>
 <dt><strong>representations</strong></dt><dd></dd>
@@ -106,11 +103,7 @@
 </dd>
 </dl>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#whiteapp.WhiteApp.Version.as_view" title="whiteapp.WhiteApp.Version.as_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_view</span></code></a>(name, *class_args, **class_kwargs)</p></td>
 <td><p>Converts the class into an actual view function that can be used with the routing system.</p></td>
@@ -124,10 +117,6 @@
 </tbody>
 </table>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 41%" />
-<col style="width: 59%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>get</strong></p></td>
 <td></td>
@@ -145,12 +134,38 @@ the <a class="reference internal" href="#whiteapp.WhiteApp.Version.dispatch_requ
 constructor of the class.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="whiteapp.WhiteApp.Version.decorators">
+<span class="sig-name descname"><span class="pre">decorators</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#whiteapp.WhiteApp.Version.decorators" title="Permalink to this definition"></a></dt>
+<dd><p>The canonical way to decorate class-based views is to decorate the
+return value of as_view().  However since this moves parts of the
+logic from the class declaration to the place where it’s hooked
+into the routing system.</p>
+<p>You can place one or more decorators in this list and whenever the
+view function is created the result is automatically decorated.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.</span></p>
+</div>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="whiteapp.WhiteApp.Version.dispatch_request">
 <span class="sig-name descname"><span class="pre">dispatch_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#whiteapp.WhiteApp.Version.dispatch_request" title="Permalink to this definition"></a></dt>
 <dd><p>Subclasses have to override this method to implement the
 actual view function code.  This method is called with all
 the arguments from the URL rule.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="whiteapp.WhiteApp.Version.methods">
+<span class="sig-name descname"><span class="pre">methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'GET'}</span></em><a class="headerlink" href="#whiteapp.WhiteApp.Version.methods" title="Permalink to this definition"></a></dt>
+<dd><p>A list of methods this view can handle.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="whiteapp.WhiteApp.Version.provide_automatic_options">
+<span class="sig-name descname"><span class="pre">provide_automatic_options</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#whiteapp.WhiteApp.Version.provide_automatic_options" title="Permalink to this definition"></a></dt>
+<dd><p>Setting this disables or force-enables the automatic options handling.</p>
 </dd></dl>
 
 <dl class="py method">
