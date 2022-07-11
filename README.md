@@ -1,5 +1,9 @@
 [![Python Flask docker](https://github.com/adimajo/whiteapp_flask/actions/workflows/python-flask.yml/badge.svg)](https://github.com/adimajo/whiteapp_flask/actions/workflows/python-flask.yml)
-[![Build Status](https://app.travis-ci.com/adimajo/whiteapp_flask.svg?token=opB6ydhp1rfhZkQiU4AY&branch=master)](https://app.travis-ci.com/adimajo/whiteapp_flask)[![Coverage status](https://codecov.io/gh/adimajo/whiteapp_flask/branch/master/graph/badge.svg)](https://codecov.io/github/adimajo/whiteapp_flask?branch=master)
+[![Build Status](https://app.travis-ci.com/adimajo/whiteapp_flask.svg?token=opB6ydhp1rfhZkQiU4AY&branch=master)](https://app.travis-ci.com/adimajo/whiteapp_flask)
+[![pipeline status](https://gitlab.com/adimajo/whiteapp_flask/badges/master/pipeline.svg)](https://gitlab.com/adimajo/whiteapp_flask/-/commits/master)
+
+[![Coverage status](https://codecov.io/gh/adimajo/whiteapp_flask/branch/master/graph/badge.svg)](https://codecov.io/github/adimajo/whiteapp_flask?branch=master)
+[![coverage report](https://gitlab.com/adimajo/whiteapp_flask/badges/master/coverage.svg)](https://gitlab.com/adimajo/whiteapp_flask/-/commits/master)
 
 # WhiteApp Python Flask
 
