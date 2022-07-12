@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.8, 3.9]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -56,7 +56,6 @@ jobs:
         run: |
           cd docs
           PIPENV_PIPFILE=../whiteapp/Pipfile pipenv run make html
-          touch build/html/.nojekyll
           cd ..
       - name: Upload documentation
         run: |
@@ -73,6 +72,7 @@ jobs:
           cp -rf docs/build/html/* docs_temp/
           rm -rf docs
           mv docs_temp docs
+          touch docs/.nojekyll
           git add docs
           if ! git diff-index --quiet HEAD -- ; then git commit -am "Rollout version ${{ env.APPLICATION_TAG_VERSION }}" && git push origin pages --force; else echo "Nothing to push"; fi
           git checkout master
