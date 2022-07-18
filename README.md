@@ -31,19 +31,13 @@ since I use the same pipeline at Crédit Agricole S.A. with our own instances of
 
 If you wish to deploy on Dockerhub, you should have a repository set up with the same name as your repository.
 
-`CURRENT_TAG`: the tag of an available public Gitlab runner, e.g. `docker`
-
-`PYPI_REMOTE`: the URL to your favorite PyPi remote, e.g. `https://pypi.org/simple`
-
-`BOOT_SONAR_INSTANCE`: `https://sonarcloud.io/`
-
-`BOOT_SONAR_TOKEN`: you can obtain this token by logging in to [sonarcloud.io](https://sonarcloud.io/) and generating a key.
-
-`DOCKER_CI_REGISTRY`: the Docker registry on which to upload the image, e.g. index.docker.io or registry.gitlab.com
-
-`DOCKER_CI_REGISTRY_USER`: your registry username, e.g. Gitlab or Dockerhub username
-
-`DOCKER_CI_REGISTRY_PASSWORD`: your registry password (or access token), e.g. Gitlab or Dockerhub username
+- `CURRENT_TAG`: the tag of an available public Gitlab runner, e.g. `docker`
+- `PYPI_REMOTE`: the URL to your favorite PyPi remote, e.g. `https://pypi.org/simple`
+- `SONAR_HOST_URL`: `https://sonarcloud.io/`
+- `SONAR_TOKEN`: you can obtain this token by logging in to [sonarcloud.io](https://sonarcloud.io/) and generating a key.
+- `DOCKER_CI_REGISTRY`: the Docker registry on which to upload the image, e.g. index.docker.io or registry.gitlab.com
+- `DOCKER_CI_REGISTRY_USER`: your registry username, e.g. Gitlab or Dockerhub username
+- `DOCKER_CI_REGISTRY_PASSWORD`: your registry password (or access token), e.g. Gitlab or Dockerhub username
 
 ## Using the Travis pipeline
 
