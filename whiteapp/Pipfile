@@ -13,6 +13,7 @@ numpydoc = "*"
 bandit = "*"
 
 [packages]
+wergzeug = "<=2.1.2"
 loguru = "*"
 gunicorn = "*"
 flask = "*"
