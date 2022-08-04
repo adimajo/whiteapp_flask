@@ -95,7 +95,7 @@ test:
   <<: *common_python
   <<: *common_tag
   script:
-#    - pip install pipenv
+    - pip install pipenv
 #    - apt update
 #    - apt -y install libpq-dev gcc
     - pipenv install -d --skip-lock
@@ -115,8 +115,9 @@ security:
   <<: *common_python
   <<: *common_tag
   script:
-  - pip install bandit
-  - bandit -r whiteapp
+  - pip install pipenv
+#  - pip install bandit
+  - pipenv run bandit -r whiteapp
   only:
     refs:
       - branches
