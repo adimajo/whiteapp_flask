@@ -96,8 +96,6 @@ test:
   <<: *common_tag
   script:
     - pip install pipenv
-#    - apt update
-#    - apt -y install libpq-dev gcc
     - pipenv install -d --skip-lock
     - pipenv run coverage run --source whiteapp/ -m pytest
     - pipenv run coverage report
@@ -116,7 +114,6 @@ security:
   <<: *common_tag
   script:
   - pip install pipenv
-#  - pip install bandit
   - pipenv run bandit -r whiteapp
   only:
     refs:
@@ -137,9 +134,9 @@ quality_check:
     - . ./build.env
     - apk --update add java-common
     - 'echo GENERATED TAG : $APPLICATION_TAG_VERSION'
-    - if [ $GITLAB_SRV_ACCOUNT != '' ]; then wget -qO - ${PKI}/cacreditagricoleserver.crt >> cacreditagricoleserver.crt ; fi
-    - if [ $GITLAB_SRV_ACCOUNT != '' ]; then keytool -import -alias mycert -file cacreditagricoleserver.crt -storetype jks -trustcacerts -noprompt -keypass keypass -keystore cacerts -storepass test@123 ; fi
-    - if [ $GITLAB_SRV_ACCOUNT != '' ]; then export SONAR_SCANNER_OPTS="-Djavax.net.ssl.trustStore=cacerts" ; fi
+    - if [ -z $GITLAB_SRV_ACCOUNT ]; then wget -qO - ${PKI}/cacreditagricoleserver.crt >> cacreditagricoleserver.crt ; fi
+    - if [ -z $GITLAB_SRV_ACCOUNT ]; then keytool -import -alias mycert -file cacreditagricoleserver.crt -storetype jks -trustcacerts -noprompt -keypass keypass -keystore cacerts -storepass test@123 ; fi
+    - if [ -z $GITLAB_SRV_ACCOUNT ]; then export SONAR_SCANNER_OPTS="-Djavax.net.ssl.trustStore=cacerts" ; fi
     - sonar-scanner -Dsonar.exclusions=tests/**,docs/**,coverage.xml,setup.py -Dsonar.organization=${DOCKER_CI_REGISTRY_USER} -Dsonar.python.coverage.reportPaths=coverage.xml -Dsonar.qualitygate.wait=true -Dsonar.projectKey=${DOCKER_CI_REGISTRY_USER}_${CI_PROJECT_NAME} -Dsonar.projectVersion=$APPLICATION_TAG_VERSION
   only:
    - master
@@ -152,11 +149,8 @@ pages:
   <<: *common_tag
   script:
     - . ./build.env
-#    - pip install pipenv==2021.5.29
-#    - apt update
-#    - apt install -y make libpq-dev gcc git
+    - pip install pipenv
     - cd docs
-#    - pipenv install -d --skip-lock
     - pipenv run make clean
     - pipenv run make html
     - cd ..
@@ -178,12 +172,8 @@ document_cagip:
   <<: *common_tag
   script:
     - . ./build.env
-#    - pip install pipenv==2021.5.29
-#    - apt update
-#    - apt install -y make libpq-dev gcc git
-#    - cd docs
-#    - export PIPENV_PIPFILE=../whiteapp/Pipfile
-#    - pipenv install -d --skip-lock
+    - pip install pipenv
+    - cd docs
     - pipenv run make clean
     - pipenv run make html
     - git config --global http.sslverify false
@@ -204,6 +194,7 @@ document_cagip:
         fi
 
 build whiteapp:
+  cache: []
   stage: build
   rules:
     - if: $CI_COMMIT_REF_NAME == "master" && $GITLAB_SRV_ACCOUNT
@@ -231,6 +222,7 @@ build whiteapp:
     - /kaniko/executor --context . --dockerfile Dockerfile $KANIKOPROXYBUILDARGS --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY --build-arg PYPI_REMOTE=$PYPI_REMOTE --destination $ARTI_SCRATCH_REGISTRY.$ARTI_REGISTRY/$ARTI_REPO:$APPLICATION_TAG_VERSION
 
 build_and_deploy_gitlab_registry:
+  cache: []
   stage: deploy_dev
   rules:
     - if: $CI_COMMIT_REF_NAME == "master" && $GITLAB_SRV_ACCOUNT == null
@@ -248,6 +240,7 @@ build_and_deploy_gitlab_registry:
     - docker push "${CI_REGISTRY}/${DOCKER_CI_REGISTRY_USER}/${CI_PROJECT_NAME}:${APPLICATION_TAG_VERSION}"
 
 build_and_deploy_dockerhub:
+  cache: []
   stage: deploy_dev
   rules:
     - if: $CI_COMMIT_REF_NAME == "master" && $GITLAB_SRV_ACCOUNT == null
@@ -264,6 +257,7 @@ build_and_deploy_dockerhub:
     - docker push "${DOCKER_CI_REGISTRY_USER}/${CI_PROJECT_NAME}:${APPLICATION_TAG_VERSION}"
 
 deploy_dev:
+  cache: []
   stage: deploy_dev
   rules:
     - if: $CI_COMMIT_REF_NAME == "master" && $GITLAB_SRV_ACCOUNT
@@ -285,6 +279,7 @@ deploy_dev:
         fi
 
 promote_staging:
+  cache: []
   stage: promote_staging
   rules:
     - if: $CI_COMMIT_REF_NAME == "master" && $GITLAB_SRV_ACCOUNT
@@ -301,6 +296,7 @@ promote_staging:
     - 'curl -S -k -u ${CREDS} -XPOST https://$ARTI_REGISTRY/api/docker/$SOURCE_REPO/v2/promote -H "Content-Type: application/json" -d"{\"targetRepo\":\"${TARGET_REPO}\",\"dockerRepository\":\"${ARTI_REPO}\",\"tag\":\"${APPLICATION_TAG_VERSION}\",\"copy\":true}"'
 
 #deploy_int:
+#  cache: []
 #  stage: deploy_int
 #  when: manual
 #  <<: *ci_tools
@@ -323,6 +319,7 @@ promote_staging:
 #   - master
 #
 #deploy_uat:
+#  cache: []
 #  stage: deploy_uat
 #  when: manual
 #  <<: *ci_tools
@@ -343,8 +340,9 @@ promote_staging:
 #        fi
 #  only:
 #   - master
-#
+
 promote_stable:
+  cache: []
   stage: promote_stable
   rules:
     - if: $CI_COMMIT_REF_NAME == "master" && $GITLAB_SRV_ACCOUNT
@@ -361,6 +359,7 @@ promote_stable:
     - docker-promote --tag=$APPLICATION_TAG_VERSION
 
 #deploy_preprod:
+#  cache: []
 #  stage: deploy_pprd
 #  when: manual
 #  <<: *ci_tools
@@ -396,6 +395,7 @@ promote_stable:
 #   - master
 #
 #deploy_prod:
+#  cache: []
 #  stage: deploy_prd
 #  when: manual
 #  <<: *ci_tools
